@@ -1,10 +1,4 @@
 
-/*
- * pwm.h
- *
- * Created: 5/22/2022 3:17:18 PM
- *  Author: ssrag
- */ 
 //fast pwm mode
 void PWM_init(){
 	/*set fast PWM mode with non-inverted output*/

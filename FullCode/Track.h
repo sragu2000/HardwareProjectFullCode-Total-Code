@@ -1,19 +1,12 @@
-
-/*
- * Track.h
- *
- * Created: 5/10/2022 1:19:01 PM
- *  Author: ishu
- */ 
-
-void convert_time_to_UTC();
-void convert_to_degrees(char *);
+void convert_to_degrees_lat(char *);
+void convert_to_degrees_long(char *);
 
 #define Buffer_Size 150
 #define degrees_buffer_size 20
 
-char Latitude_Buffer[15],Longitude_Buffer[15],Time_Buffer[15],Altitude_Buffer[8];//define the string size
-char degrees_buffer[degrees_buffer_size];                      /* save latitude or longitude in degree - degrees_buffer[20]*/
+char Latitude_Buffer[15],Longitude_Buffer[15],Altitude_Buffer[8];//define the string size
+char lat_degrees_buffer[degrees_buffer_size];                      /* save latitude or longitude in degree - degrees_buffer[20]*/
+char long_degrees_buffer[degrees_buffer_size];                      /* save latitude or longitude in degree - degrees_buffer[20]*/
 char GGA_Buffer[Buffer_Size];                                  /* save GGA string - GGA_Buffer[150] */
 uint8_t GGA_Pointers[20];                                      /* to store instances of ',' */
 char GGA_CODE[3];
@@ -25,18 +18,7 @@ flag1			= false,
 flag2			= false;
 
 
-void get_gpstime(){
-	cli();  //Command Line Interface - CLIs accept as input commands that are entered by keyboard
-	uint8_t time_index=0; // unsigned 8-bit integer- integer has a range of 0 to 255
-	/* parse Time in GGA string stored in buffer */
-	for(uint8_t index = 0;GGA_Buffer[index]!=','; index++){
-		
-		Time_Buffer[time_index] = GGA_Buffer[index];
-		time_index++;
-	}
-	convert_time_to_UTC();   //In this function the GPS time string type convert as an integer and print that time
-	sei(); //It is a macro that executes an assembler instruction to enable interrupts.
-}
+
 
 void get_latitude(uint16_t lat_pointer){  //unsigned 16-bit integer - integers between 0 and 65,535
 	cli(); //Command Line Interface - CLIs accept as input commands that are entered by keyboard
@@ -52,7 +34,7 @@ void get_latitude(uint16_t lat_pointer){  //unsigned 16-bit integer - integers b
 	
 	Latitude_Buffer[lat_index++] = GGA_Buffer[index++];
 	Latitude_Buffer[lat_index]= GGA_Buffer[index];		/* get direction */
-	convert_to_degrees(Latitude_Buffer);   // convert raw latitude into degree format and pass that value as string
+	convert_to_degrees_lat(Latitude_Buffer);   // convert raw latitude into degree format and pass that value as string
 	sei(); //It is a macro that executes an assembler instruction to enable interrupts.
 }
 
@@ -70,8 +52,9 @@ void get_longitude(uint16_t long_pointer){
 	
 	Longitude_Buffer[long_index++] = GGA_Buffer[index++];
 	Longitude_Buffer[long_index]   = GGA_Buffer[index]; /* get direction */
-	convert_to_degrees(Longitude_Buffer); // convert raw longitude into degree format and pass that value as string
+	convert_to_degrees_long(Longitude_Buffer); // convert raw longitude into degree format and pass that value as string
 	sei(); //It is a macro that executes an assembler instruction to enable interrupts.
+
 }
 
 void get_altitude(uint16_t alt_pointer){  //unsigned 16-bit integer - integers between 0 and 65,535
@@ -88,21 +71,9 @@ void get_altitude(uint16_t alt_pointer){  //unsigned 16-bit integer - integers b
 	Altitude_Buffer[alt_index]   = GGA_Buffer[index+1];
 	sei();//It is a macro that executes an assembler instruction to enable interrupts.
 }
-void convert_time_to_UTC()
-{
-	unsigned int hour, min, sec;
-	uint32_t Time_value;   //32-bit unsigned integer - range [0 to 4294967295]
-	
-	Time_value = atol(Time_Buffer);               /* atol is an in-build function which convert string to integer */
-	hour = (Time_value / 10000);                  /* get hour from time_value integer */
-	min = (Time_value % 10000) / 100;             /* get minute from time_value integer */
-	sec = (Time_value % 10000) % 100;             /* get second from time_value integer*/
 
-	sprintf(Time_Buffer, "%d:%d:%d", hour,min,sec); //sprint means String_Print.Here the time will print
-	
-}
 
-void convert_to_degrees(char *raw){
+void convert_to_degrees_lat(char *raw){
 	
 	double value;
 	float decimal_value,temp;
@@ -118,10 +89,27 @@ void convert_to_degrees(char *raw){
 	temp = (decimal_value - (int)decimal_value)/0.6;
 	position = (float)degrees + temp;
 	
-	dtostrf(position, 6, 4, degrees_buffer); /* dtostrf is a function that convert float value into string.Here the position is a float value and it convert as a string degree buffer variable*/
+	dtostrf(position, 6, 4, lat_degrees_buffer); /* dtostrf is a function that convert float value into string.Here the position is a float value and it convert as a string degree buffer variable*/
 }
 
-
+void convert_to_degrees_long(char *raw){
+	
+	double value;
+	float decimal_value,temp;
+	
+	int32_t degrees;
+	
+	float position;
+	value = atof(raw); /* convert string into float for conversion */
+	
+	/* convert raw latitude/longitude into degree format */
+	decimal_value = (value/100);
+	degrees = (int)(decimal_value);
+	temp = (decimal_value - (int)decimal_value)/0.6;
+	position = (float)degrees + temp;
+	
+	dtostrf(position, 6, 4, long_degrees_buffer); /* dtostrf is a function that convert float value into string.Here the position is a float value and it convert as a string degree buffer variable*/
+}
 
 ISR (USART_RXC_vect)
 {

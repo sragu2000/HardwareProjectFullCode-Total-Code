@@ -1,10 +1,3 @@
-
-/*
- * mpu6050.h
- *
- * Created: 5/8/2022 5:48:25 AM
- *  Author: ssrag
- */ 
 float Acc_x,Acc_y,Acc_z,Temperature,Gyro_x,Gyro_y,Gyro_z;
 void MPU6050_Init()										/* Gyro initialization function */
 {

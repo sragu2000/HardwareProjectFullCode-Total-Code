@@ -1,10 +1,3 @@
-/*
- * I2C_Master_C_file.c
- * http://www.electronicwings.com
- *
- */ 
-
-
 #include "I2C_Master_H_file.h"								/* Include I2C header file */
 
 void I2C_Init()												/* I2C initialize function */

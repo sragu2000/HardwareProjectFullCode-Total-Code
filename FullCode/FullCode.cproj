@@ -123,7 +123,7 @@
     <Compile Include="ADC.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="gsm.h">
+    <Compile Include="gsmmessage.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="headerfiles.h">
@@ -135,7 +135,7 @@
     <Compile Include="I2C_Master_H_file.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="LCD_16x2_H_file.h">
+    <Compile Include="LCD.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
@@ -156,10 +156,7 @@
     <Compile Include="Track.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="USART_Interrupt.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="USART_Interrupt.h">
+    <Compile Include="usart.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
