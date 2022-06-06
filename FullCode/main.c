@@ -3,7 +3,10 @@
 #include "headerfiles.h"
 int main(void){
 	DDRD=0xE4;
-	LCD_Init();LCD_String("Initializing..");_delay_ms(50);LCD_Clear();
+	LCD_Init();
+	LCD_String("Initializing..");
+	_delay_ms(50);
+	LCD_Clear();
 	I2C_Init();
 	MPU6050_Init();
 	PWM_init();
@@ -11,7 +14,9 @@ int main(void){
 	USART_Init(9600);
 	sei();
 	start:
-	LCD_String("Welcome");_delay_ms(100);LCD_Clear();
+	LCD_String("Welcome");
+	_delay_ms(100);
+	LCD_Clear();
 	float Xa,Ya,Za; // for gyroscope
 	while (1){
 		//flame detection
@@ -28,12 +33,11 @@ int main(void){
 		}
 		else{
 			ADC_Init();
-			int val=ADC_Read(0);
-			float speed=(val/1024.0)*255.0;
-			OCR0=(int)speed;
-			//get pressure
 			int value = ADC_Read(1);
 			if (value > 109){// if value gt 109 vehicle is moving
+				int val=ADC_Read(0);
+				float speed=(val/1024.0)*255.0;
+				OCR0=(int)speed;
 				LCD_Clear();
 				LCD_String("Driving mode");
 				if(pinRead(PINC,alcohol)==0x20){

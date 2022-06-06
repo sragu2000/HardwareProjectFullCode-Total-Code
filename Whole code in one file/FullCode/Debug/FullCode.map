@@ -906,10 +906,10 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2281
+.debug_info     0x00000000     0x228b
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega32/avr5/crtatmega32.o
- .debug_info    0x000004e6     0x1d9b main.o
+ .debug_info    0x000004e6     0x1da5 main.o
 
 .debug_abbrev   0x00000000      0x7dc
  *(.debug_abbrev)

@@ -230,12 +230,11 @@ int main(void){
 		}
 		else{
 			ADC_Init();
-			int val=ADC_Read(0);
-			float speed=(val/1024.0)*255.0;
-			OCR0=(int)speed;
-			//get pressure
 			int value = ADC_Read(1);
 			if (value > 109){// if value gt 109 vehicle is moving
+				int val=ADC_Read(0);
+				float speed=(val/1024.0)*255.0;
+				OCR0=(int)speed;
 				LCD_Clear();
 				LCD_String("Driving mode");
 				if(pinRead(PINC,alcohol)==0x20){
@@ -286,7 +285,7 @@ int main(void){
 						while(1){}//let motor to slowdown fully
 					}
 				}
-			}else{
+				}else{
 				LCD_String("Vehicle is");
 				LCD_Command(0xc0);
 				LCD_String("not moving");
