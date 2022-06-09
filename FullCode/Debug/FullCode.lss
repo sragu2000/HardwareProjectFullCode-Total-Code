@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 00000170  00000000  00000000  00001fe0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000022c6  00000000  00000000  00002150  2**0
+  6 .debug_info   000022d0  00000000  00000000  00002150  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000873  00000000  00000000  00004416  2**0
+  7 .debug_abbrev 00000873  00000000  00000000  00004420  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00001157  00000000  00000000  00004c89  2**0
+  8 .debug_line   0000115c  00000000  00000000  00004c93  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  00000420  00000000  00000000  00005de0  2**2
+  9 .debug_frame  00000420  00000000  00000000  00005df0  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000766  00000000  00000000  00006200  2**0
+ 10 .debug_str    00000766  00000000  00000000  00006210  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00001879  00000000  00000000  00006966  2**0
+ 11 .debug_loc    00001879  00000000  00000000  00006976  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000168  00000000  00000000  000081df  2**0
+ 12 .debug_ranges 00000168  00000000  00000000  000081ef  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -2112,8 +2112,9 @@ int main(void){
 	DDRD=0xE4;
      dbe:	84 ee       	ldi	r24, 0xE4	; 228
      dc0:	81 bb       	out	0x11, r24	; 17
-	LCD_Init();LCD_String("Initializing..");_delay_ms(50);LCD_Clear();
+	LCD_Init();
      dc2:	0e 94 ab 01 	call	0x356	; 0x356 <LCD_Init>
+	LCD_String("Initializing..");
      dc6:	86 ef       	ldi	r24, 0xF6	; 246
      dc8:	90 e0       	ldi	r25, 0x00	; 0
      dca:	0e 94 cf 01 	call	0x39e	; 0x39e <LCD_String>
@@ -2126,6 +2127,8 @@ int main(void){
      dda:	e1 f7       	brne	.-8      	; 0xdd4 <main+0x16>
      ddc:	00 c0       	rjmp	.+0      	; 0xdde <main+0x20>
      dde:	00 00       	nop
+	_delay_ms(50);
+	LCD_Clear();
      de0:	0e 94 01 02 	call	0x402	; 0x402 <LCD_Clear>
 	I2C_Init();
      de4:	0e 94 e4 00 	call	0x1c8	; 0x1c8 <I2C_Init>
@@ -2145,7 +2148,7 @@ int main(void){
 	sei();
      e04:	78 94       	sei
 	start:
-	LCD_String("Welcome");_delay_ms(100);LCD_Clear();
+	LCD_String("Welcome");
      e06:	85 e0       	ldi	r24, 0x05	; 5
      e08:	91 e0       	ldi	r25, 0x01	; 1
      e0a:	0e 94 cf 01 	call	0x39e	; 0x39e <LCD_String>
@@ -2158,6 +2161,8 @@ int main(void){
      e1a:	e1 f7       	brne	.-8      	; 0xe14 <main+0x56>
      e1c:	00 c0       	rjmp	.+0      	; 0xe1e <main+0x60>
      e1e:	00 00       	nop
+	_delay_ms(100);
+	LCD_Clear();
      e20:	0e 94 01 02 	call	0x402	; 0x402 <LCD_Clear>
 	float Xa,Ya,Za; // for gyroscope
 	while (1){
@@ -2200,37 +2205,36 @@ int main(void){
 		else{
 			ADC_Init();
      e64:	0e 94 40 02 	call	0x480	; 0x480 <ADC_Init>
-			int val=ADC_Read(0);
-     e68:	80 e0       	ldi	r24, 0x00	; 0
-     e6a:	0e 94 46 02 	call	0x48c	; 0x48c <ADC_Read>
-			float speed=(val/1024.0)*255.0;
-     e6e:	bc 01       	movw	r22, r24
-     e70:	99 0f       	add	r25, r25
-     e72:	88 0b       	sbc	r24, r24
-     e74:	99 0b       	sbc	r25, r25
-     e76:	0e 94 4c 09 	call	0x1298	; 0x1298 <__floatsisf>
-     e7a:	20 e0       	ldi	r18, 0x00	; 0
-     e7c:	30 e0       	ldi	r19, 0x00	; 0
-     e7e:	40 e8       	ldi	r20, 0x80	; 128
-     e80:	5a e3       	ldi	r21, 0x3A	; 58
-     e82:	0e 94 01 0a 	call	0x1402	; 0x1402 <__mulsf3>
-     e86:	20 e0       	ldi	r18, 0x00	; 0
-     e88:	30 e0       	ldi	r19, 0x00	; 0
-     e8a:	4f e7       	ldi	r20, 0x7F	; 127
-     e8c:	53 e4       	ldi	r21, 0x43	; 67
-     e8e:	0e 94 01 0a 	call	0x1402	; 0x1402 <__mulsf3>
-			OCR0=(int)speed;
-     e92:	0e 94 14 09 	call	0x1228	; 0x1228 <__fixsfsi>
-     e96:	6c bf       	out	0x3c, r22	; 60
-			//get pressure
 			int value = ADC_Read(1);
-     e98:	81 e0       	ldi	r24, 0x01	; 1
-     e9a:	0e 94 46 02 	call	0x48c	; 0x48c <ADC_Read>
+     e68:	81 e0       	ldi	r24, 0x01	; 1
+     e6a:	0e 94 46 02 	call	0x48c	; 0x48c <ADC_Read>
 			if (value > 109){// if value gt 109 vehicle is moving
-     e9e:	8e 36       	cpi	r24, 0x6E	; 110
-     ea0:	91 05       	cpc	r25, r1
-     ea2:	0c f4       	brge	.+2      	; 0xea6 <main+0xe8>
-     ea4:	c6 c0       	rjmp	.+396    	; 0x1032 <main+0x274>
+     e6e:	8e 36       	cpi	r24, 0x6E	; 110
+     e70:	91 05       	cpc	r25, r1
+     e72:	0c f4       	brge	.+2      	; 0xe76 <main+0xb8>
+     e74:	de c0       	rjmp	.+444    	; 0x1032 <main+0x274>
+				int val=ADC_Read(0);
+     e76:	80 e0       	ldi	r24, 0x00	; 0
+     e78:	0e 94 46 02 	call	0x48c	; 0x48c <ADC_Read>
+				float speed=(val/1024.0)*255.0;
+     e7c:	bc 01       	movw	r22, r24
+     e7e:	99 0f       	add	r25, r25
+     e80:	88 0b       	sbc	r24, r24
+     e82:	99 0b       	sbc	r25, r25
+     e84:	0e 94 4c 09 	call	0x1298	; 0x1298 <__floatsisf>
+     e88:	20 e0       	ldi	r18, 0x00	; 0
+     e8a:	30 e0       	ldi	r19, 0x00	; 0
+     e8c:	40 e8       	ldi	r20, 0x80	; 128
+     e8e:	5a e3       	ldi	r21, 0x3A	; 58
+     e90:	0e 94 01 0a 	call	0x1402	; 0x1402 <__mulsf3>
+     e94:	20 e0       	ldi	r18, 0x00	; 0
+     e96:	30 e0       	ldi	r19, 0x00	; 0
+     e98:	4f e7       	ldi	r20, 0x7F	; 127
+     e9a:	53 e4       	ldi	r21, 0x43	; 67
+     e9c:	0e 94 01 0a 	call	0x1402	; 0x1402 <__mulsf3>
+				OCR0=(int)speed;
+     ea0:	0e 94 14 09 	call	0x1228	; 0x1228 <__fixsfsi>
+     ea4:	6c bf       	out	0x3c, r22	; 60
 				LCD_Clear();
      ea6:	0e 94 01 02 	call	0x402	; 0x402 <LCD_Clear>
 				LCD_String("Driving mode");

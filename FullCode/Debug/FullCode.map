@@ -913,11 +913,11 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x22c6
+.debug_info     0x00000000     0x22d0
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x4e6 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_info    0x000004e6      0x1c9 I2C_Master_C_file.o
- .debug_info    0x000006af     0x1c17 main.o
+ .debug_info    0x000006af     0x1c21 main.o
 
 .debug_abbrev   0x00000000      0x873
  *(.debug_abbrev)
@@ -925,11 +925,11 @@ END GROUP
  .debug_abbrev  0x000004a3       0xc6 I2C_Master_C_file.o
  .debug_abbrev  0x00000569      0x30a main.o
 
-.debug_line     0x00000000     0x1157
+.debug_line     0x00000000     0x115c
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x116 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega32/avr5/crtatmega32.o
  .debug_line    0x00000116      0x2c1 I2C_Master_C_file.o
- .debug_line    0x000003d7      0xd80 main.o
+ .debug_line    0x000003d7      0xd85 main.o
 
 .debug_frame    0x00000000      0x420
  *(.debug_frame)
