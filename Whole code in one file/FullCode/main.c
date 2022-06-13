@@ -199,7 +199,8 @@ char GGA_Buffer[Buffer_Size];
 float Acc_x,Acc_y,Acc_z,Temperature,Gyro_x,Gyro_y,Gyro_z;
 
 int main(void){
-	DDRD=0xE4;
+	DDRD=0xE8;
+	PORTD=0x04;
 	LCD_Init();
 	LCD_String("Initializing..");
 	_delay_ms(50);
@@ -210,9 +211,8 @@ int main(void){
 	GGA_Index=0;
 	USART_Init(9600);
 	sei();
-	start:
 	LCD_String("Welcome");
-	_delay_ms(100);
+	_delay_ms(3000);
 	LCD_Clear();
 	float Xa,Ya,Za; // for gyroscope
 	while (1){
@@ -258,17 +258,10 @@ int main(void){
 						onHazardLight();
 						LCD_Command(0xc0);
 						LCD_String("Waiting..");
-						int x;
-						//wait for 5 seconds on 20ms time interval
-						for(x=1;x<=20;x++){
-							if(pinRead(PINC,3)==0x08){
-								stopAlarm();
-								offHazardLight();
-								LCD_Clear();
-								goto start;
-							}
-							_delay_ms(250);
-						}
+						GICR = 1<<INT0;		/* Enable INT0*/
+						MCUCR = 1<<ISC01 | 1<<ISC00;  /* Trigger INT0 on rising edge */
+						sei();			/* Enable Global Interrupt */
+						_delay_ms(5000);
 						LCD_Clear();
 						LCD_String("Waiting");
 						LCD_Command(0xc0);
@@ -298,6 +291,15 @@ int main(void){
 
 void ringAlarm(){
 	portHigh(PORTD,buzzer);//buzzer
+}
+
+ISR(INT0_vect)
+{
+	LCD_Clear();
+	portLow(PORTD,6);
+	portLow(PORTD,7);
+	_delay_ms(50);
+	main();
 }
 
 void stopAlarm(){
@@ -346,7 +348,7 @@ void sendLocation(char* message){
 	char* lngtd=long_degrees_buffer;
 	get_altitude(GGA_Pointers[7]);
 	char* altitude=Altitude_Buffer;
-	PORTD=0x04;// change signal using mux
+	PORTD=0x08;// change signal using mux
 	sendMessage(message,lat,lngtd,altitude);
 	PORTD=0x00;// turn back to normal
 }

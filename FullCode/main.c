@@ -2,7 +2,7 @@
 #define SREG   _SFR_IO8(0x3f)
 #include "headerfiles.h"
 int main(void){
-	DDRD=0xE8;
+	DDRD=0xE8; 
 	PORTD=0x04;
 	LCD_Init();
 	LCD_String("Initializing..");
@@ -15,7 +15,7 @@ int main(void){
 	USART_Init(9600);
 	sei();
 	LCD_String("Welcome");
-	_delay_ms(100);
+	_delay_ms(3000);
 	LCD_Clear();
 	float Xa,Ya,Za; // for gyroscope
 	while (1){

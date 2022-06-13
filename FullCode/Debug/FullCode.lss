@@ -2110,7 +2110,7 @@ void sendLocation(char* message){
 #define SREG   _SFR_IO8(0x3f)
 #include "headerfiles.h"
 int main(void){
-	DDRD=0xE8;
+	DDRD=0xE8; 
      dbe:	88 ee       	ldi	r24, 0xE8	; 232
      dc0:	81 bb       	out	0x11, r24	; 17
 	PORTD=0x04;
@@ -2156,15 +2156,15 @@ int main(void){
      e0c:	91 e0       	ldi	r25, 0x01	; 1
      e0e:	0e 94 cf 01 	call	0x39e	; 0x39e <LCD_String>
      e12:	2f ef       	ldi	r18, 0xFF	; 255
-     e14:	80 e7       	ldi	r24, 0x70	; 112
-     e16:	92 e0       	ldi	r25, 0x02	; 2
+     e14:	8d e3       	ldi	r24, 0x3D	; 61
+     e16:	99 e4       	ldi	r25, 0x49	; 73
      e18:	21 50       	subi	r18, 0x01	; 1
      e1a:	80 40       	sbci	r24, 0x00	; 0
      e1c:	90 40       	sbci	r25, 0x00	; 0
      e1e:	e1 f7       	brne	.-8      	; 0xe18 <main+0x5a>
      e20:	00 c0       	rjmp	.+0      	; 0xe22 <main+0x64>
      e22:	00 00       	nop
-	_delay_ms(100);
+	_delay_ms(3000);
 	LCD_Clear();
      e24:	0e 94 01 02 	call	0x402	; 0x402 <LCD_Clear>
 	float Xa,Ya,Za; // for gyroscope
